@@ -6,5 +6,6 @@ package kr.co.hs.listfilter.hangul;
  * 패키지명 : kr.co.hs.listfilter.hangul
  */
 
-public abstract class HsMatcherItem implements IHsMatcherItem{
+public interface IHsMatcherItem {
+    String compareWith();
 }
