@@ -3,6 +3,7 @@ package kr.co.hs.listfilter.hangul;
 import android.widget.Filter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * 생성된 시간 2017-02-13, Bae 에 의해 생성됨
@@ -10,15 +11,35 @@ import java.util.ArrayList;
  * 패키지명 : kr.co.hs.listfilter.hangul
  */
 
-public class HsHangulFilter<ListObject extends HsMatcherItem> extends Filter {
+public class HsHangulFilter<ListObject extends IHsMatcherItem> extends Filter {
 
     private final ArrayList<ListObject> mOriginList;
-    private OnPublishResultListener<ListObject> mListObjectOnPublishResultListener;
+    private final ArrayList<ListObject> mFilteredList;
+    private OnPublishResultListener mOnPublishResultListener;
+    private final HsHangulMatcher mHsHangulMatcher;
 
-    public HsHangulFilter(ArrayList<ListObject> originList, OnPublishResultListener<ListObject> listObjectOnPublishResultListener) {
+    public HsHangulFilter() {
         mOriginList = new ArrayList<>();
-        mOriginList.addAll(originList);
-        this.mListObjectOnPublishResultListener = listObjectOnPublishResultListener;
+        mFilteredList = new ArrayList<>();
+        mHsHangulMatcher = new HsHangulMatcher();
+    }
+
+    public int add(ListObject object){
+        int idx = Integer.MIN_VALUE;
+        mOriginList.add(object);
+        if(isMatch(object)){
+            mFilteredList.add(object);
+            idx = mFilteredList.indexOf(object);
+        }
+        return idx;
+    }
+
+    public void addAll(ArrayList<ListObject> list){
+        mOriginList.addAll(list);
+        for(ListObject item : list){
+            if(isMatch(item))
+                mFilteredList.add(item);
+        }
     }
 
     @Override
@@ -27,12 +48,11 @@ public class HsHangulFilter<ListObject extends HsMatcherItem> extends Filter {
         if(constraint.length() == 0)
             result.addAll(mOriginList);
         else{
-            HsHangulMatcher hangulMatcher = new HsHangulMatcher();
-            hangulMatcher.setSearch(constraint.toString().toLowerCase().trim());
+            mHsHangulMatcher.setSearch(constraint.toString().toLowerCase().trim());
             for (ListObject item : mOriginList) {
-                hangulMatcher.setValue(item.compareWith());
-                if(hangulMatcher.match())
+                if(isMatch(item)){
                     result.add(item);
+                }
             }
         }
         FilterResults results = new FilterResults();
@@ -42,19 +62,40 @@ public class HsHangulFilter<ListObject extends HsMatcherItem> extends Filter {
         return results;
     }
 
+    private boolean isMatch(ListObject object){
+        mHsHangulMatcher.setValue(object.compareWith());
+        if(mHsHangulMatcher.match())
+            return true;
+        else
+            return false;
+    }
+
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        if(mListObjectOnPublishResultListener != null){
-            ArrayList<ListObject> mItems = (ArrayList<ListObject>) results.values;
-            mListObjectOnPublishResultListener.onPublishResults(mItems);
+        if(getOnPublishResultListener() != null){
+            mFilteredList.clear();
+            mFilteredList.addAll((Collection<? extends ListObject>) results.values);
+            getOnPublishResultListener().publishResults(constraint, results.values, results.count);
         }
+    }
+
+    public OnPublishResultListener getOnPublishResultListener() {
+        return mOnPublishResultListener;
+    }
+
+    public void setOnPublishResultListener(OnPublishResultListener onPublishResultListener) {
+        mOnPublishResultListener = onPublishResultListener;
     }
 
     public ArrayList<ListObject> getOriginList() {
         return mOriginList;
     }
 
-    public interface OnPublishResultListener<ListObject extends HsMatcherItem>{
-        void onPublishResults(ArrayList<ListObject> list);
+    public ArrayList<ListObject> getFilteredList() {
+        return mFilteredList;
+    }
+
+    public interface OnPublishResultListener{
+        void publishResults(CharSequence constraint, Object resultValue, int resultCount);
     }
 }
