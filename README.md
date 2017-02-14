@@ -1,5 +1,7 @@
 # HsHangulListFilter
 
+[![](https://jitpack.io/v/hsbaewa/HsHangulListFilter.svg)](https://jitpack.io/#hsbaewa/HsHangulListFilter)
+
 한글 입력 필터 라이브러리
 
 
