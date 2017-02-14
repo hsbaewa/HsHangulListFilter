@@ -48,7 +48,7 @@ public class HsHangulFilter<ListObject extends IHsMatcherItem> extends Filter {
         if(constraint.length() == 0)
             result.addAll(mOriginList);
         else{
-            mHsHangulMatcher.setSearch(constraint.toString().toLowerCase().trim());
+            mHsHangulMatcher.setSearch(constraint.toString().trim());
             for (ListObject item : mOriginList) {
                 if(isMatch(item)){
                     result.add(item);
