@@ -63,7 +63,7 @@ public class HsHangulFilter<ListObject extends IHsMatcherItem> extends Filter {
     }
 
     private boolean isMatch(ListObject object){
-        mHsHangulMatcher.setValue(object.compareWith());
+        mHsHangulMatcher.setValue(object.getChar());
         if(mHsHangulMatcher.match())
             return true;
         else

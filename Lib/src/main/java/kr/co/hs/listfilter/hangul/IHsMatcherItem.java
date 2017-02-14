@@ -8,4 +8,5 @@ package kr.co.hs.listfilter.hangul;
 
 public interface IHsMatcherItem {
     String compareWith();
+    HsHangulMatcher.HsHangul[] getChar();
 }

@@ -28,7 +28,7 @@ HsHangulFilter&lt;IHsMatcherItem&gt; mHsHangulFilter = new HsHangulFilter<>();
 먼저 IHsMatcherItem을 구현하여 compareWith 함수 안에 비교 할 문자열을 리턴시킨다.
 
 <pre><code>
-public class BlackListItem implements IHsMatcherItem{
+public class BlackListItem extends HsMatcherItem{
     @Override
     public String compareWith() {
         //HsHangulFilter 내부에서 비교 될 문자열 리턴
