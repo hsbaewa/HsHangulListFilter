@@ -2,8 +2,24 @@
 
 [![](https://jitpack.io/v/hsbaewa/HsHangulListFilter.svg)](https://jitpack.io/#hsbaewa/HsHangulListFilter)
 
-한글 입력 필터 라이브러리
+###한글 입력 필터 라이브러리 추가 방법
 
+root 수준의 build.gradle에 추가
+<pre><code>
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+</code></pre>
+
+app 수준의 build.gradle에 추가
+<pre><code>
+	dependencies {
+	        compile 'com.github.hsbaewa:HsHangulListFilter:0.0.2'
+	}
+</code></pre>
 
 <pre><code>
 //초기화
