@@ -28,7 +28,7 @@ mHsHangulFilter.setOnPublishResultListener(this);
 
 RecyclerView를 사용하여 전체 예제 소스
 <pre><code>
-    class Adapter extends HsRecyclerView.HsAdapter<Holder> implements HsHangulFilter.OnPublishResultListener{
+    class Adapter extends HsRecyclerView.HsAdapter<Holder> implements Filterable, HsHangulFilter.OnPublishResultListener{
         private HsHangulFilter<Item> mHsHangulFilter = new HsHangulFilter<>();
 
         public BlackListAdapter() {
