@@ -42,6 +42,20 @@ public class HsHangulFilter<ListObject extends IHsMatcherItem> extends Filter {
         }
     }
 
+    public boolean remove(ListObject object){
+        boolean isSuccess = mOriginList.remove(object);
+        if(isMatch(object)){
+            mFilteredList.remove(object);
+            return true;
+        }
+        return false;
+    }
+
+    public void clear(){
+        mOriginList.clear();
+        mFilteredList.clear();
+    }
+
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
         ArrayList<ListObject> result = new ArrayList<>();
